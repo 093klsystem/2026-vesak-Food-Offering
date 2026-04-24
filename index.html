@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>2026 吉隆坡【浴佛节】供斋 - 报名表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fef9e7',
+                            100: '#fef1cf',
+                            200: '#fce4a6',
+                            300: '#fbd57c',
+                            400: '#f9c553',
+                            500: '#f7b42a',
+                            600: '#da9918',
+                            700: '#b97f11',
+                            800: '#96650c',
+                            900: '#734a07',
+                        },
+                        gold: {
+                            50: '#fefce8',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fef9e6 0%, #fff7e8 100%);
+            overflow-x: hidden;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            border-left: 6px solid #f7b42a;
+            transition: all 0.2s;
+        }
+
+        .blessing-card {
+            background: linear-gradient(115deg, #fff4e6 0%, #ffe9d4 100%);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid #fce4a6;
+        }
+
+        label.required::after {
+            content: ' *';
+            color: #da9918;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #b97f11;
+        }
+
+        input.invalid-field,
+        .invalid-field {
+            border-color: #dc2626 !important;
+            background-color: #fff5f5;
+        }
+
+        @keyframes gentlePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(247, 180, 42, 0.3);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(247, 180, 42, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(247, 180, 42, 0);
+            }
+        }
+
+        .merit-badge {
+            animation: gentlePulse 1.5s infinite;
+        }
+
+        .sponsor-stripe-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
+            border: 1.5px solid #f7b42a22;
+            position: relative;
+        }
+
+        .sponsor-stripe-card:focus-within,
+        .sponsor-stripe-card.active {
+            box-shadow: 0 4px 24px 0 rgba(247, 180, 42, 0.13);
+            border-color: #f7b42a;
+        }
+
+        .sponsor-stripe-remove {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #dc2626;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+
+        .sponsor-stripe-remove:hover {
+            opacity: 1;
+        }
+
+        .sponsor-stripe-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #b97f11;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+        }
+
+        .sponsor-stripe-input {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 0.6rem 0.9rem;
+            border-radius: 0.5rem;
+            border: 1.5px solid #e5e7eb;
+            background: #fef9e7;
+            margin-bottom: 0.2rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .sponsor-stripe-input:focus {
+            border-color: #f7b42a;
+            background: #fff;
+            outline: none;
+        }
+
+        .sponsor-stripe-amount-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sponsor-stripe-amount-prefix {
+            font-size: 1.1rem;
+            color: #b97f11;
+            font-weight: 600;
+        }
+
+        .sponsor-stripe-add {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            background: linear-gradient(90deg, #f7b42a 0%, #fde047 100%);
+            color: #734a07;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.7rem;
+            padding: 0.7rem 1.3rem;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 8px 0 rgba(247, 180, 42, 0.08);
+            transition: background 0.15s, box-shadow 0.15s;
+        }
+
+        .sponsor-stripe-add:hover {
+            background: linear-gradient(90deg, #fde047 0%, #f7b42a 100%);
+            box-shadow: 0 4px 16px 0 rgba(247, 180, 42, 0.13);
+        }
+
+        .sponsor-stripe-index {
+            font-size: 0.9rem;
+            color: #f7b42a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ADD THIS INSTEAD: */
+        .sponsor-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .sponsor-row:hover {
+            border-color: #f7b42a;
+            background: #fffaf0;
+        }
+
+        .sponsor-row-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sponsor-index {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b97f11;
+        }
+
+        .sponsor-row-bottom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sponsor-name {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .sponsor-name:focus {
+            border-color: #f7b42a;
+        }
+
+        .sponsor-amount-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            width: 110px;
+        }
+
+        .sponsor-amount-prefix {
+            background: #f9fafb;
+            padding: 8px 8px;
+            font-size: 13px;
+            color: #777;
+            white-space: nowrap;
+        }
+
+        .sponsor-amount {
+            width: 60px;
+            text-align: center;
+            border: none;
+            outline: none;
+            padding: 8px 4px;
+            font-size: 15px;
+        }
+
+        .sponsor-remove {
+            color: #dc2626;
+            cursor: pointer;
+            padding: 4px 6px;
+            font-size: 16px;
+        }
+
+
+        /* Confirm modal */
+        #confirmModal,
+        #successModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        #confirmModal.show,
+        #successModal.show {
+            display: flex;
+        }
+
+        #printReceipt {
+            display: none;
+            padding: 40px;
+            font-family: "Arial", "Noto Sans SC", sans-serif;
+            color: #000;
+        }
+
+        .receipt-container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .receipt-header {
+            text-align: center;
+        }
+
+        .receipt-header h1 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .receipt-header h2 {
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+
+        .receipt-section {
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .receipt-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        @media print {
+            body>div {
+                display: none !important;
+            }
+
+            #confirmModal,
+            #successModal {
+                display: none !important;
+            }
+
+            #printReceipt {
+                display: block !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: white !important;
+            }
+
+            @page {
+                margin: 10mm;
+                size: A4;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen">
+
+    <!-- ===== CONFIRM MODAL ===== -->
+    <div id="confirmModal">
+        <div
+            style="background:white;border-radius:1rem;max-width:420px;width:100%;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <div style="text-align:center;margin-bottom:1.25rem;">
+                <div style="font-size:2.5rem;margin-bottom:0.5rem;">🙏</div>
+                <h3 style="font-size:1.2rem;font-weight:700;color:#1f2937;margin:0 0 0.25rem 0;">请确认您的捐献资料</h3>
+                <p style="font-size:0.8rem;color:#6b7280;margin:0;">Please confirm your donation details</p>
+            </div>
+            <div id="confirmDetails"
+                style="background:#fef9e7;border-radius:0.75rem;padding:1rem;margin-bottom:1.25rem;font-size:0.875rem;">
+            </div>
+            <div style="display:flex;gap:0.75rem;">
+                <button onclick="closeConfirm()"
+                    style="flex:1;padding:0.75rem;border:1.5px solid #d1d5db;border-radius:0.5rem;background:white;color:#374151;font-size:0.9rem;font-weight:600;cursor:pointer;">
+                    ← 返回修改
+                </button>
+                <button onclick="proceedSubmit()"
+                    style="flex:1;padding:0.75rem;border:none;border-radius:0.5rem;background:#da9918;color:white;font-size:0.9rem;font-weight:700;cursor:pointer;">
+                    确认提交 ✓
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SUCCESS MODAL ===== -->
+    <div id="successModal">
+        <div
+            style="background:white;border-radius:1rem;max-width:460px;width:100%;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;">
+            <div style="text-align:center;margin-bottom:1.25rem;">
+                <div style="font-size:2.5rem;margin-bottom:0.5rem;">✅</div>
+                <h3 style="font-size:1.4rem;font-weight:700;color:#15803d;margin:0 0 0.25rem 0;">提交成功！</h3>
+                <p style="font-size:0.85rem;color:#6b7280;margin:0;">感谢您的随喜功德，功德无量</p>
+            </div>
+            <div
+                style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:0.75rem;padding:1rem;margin-bottom:1rem;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                    <span
+                        style="font-size:0.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:1px;">报名编号</span>
+                </div>
+                <p id="modalReceiptId"
+                    style="font-size:1.1rem;font-weight:700;color:#15803d;letter-spacing:2px;margin:0 0 0.75rem 0;"></p>
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #bbf7d0;padding-top:0.75rem;">
+                    <span style="font-size:0.85rem;color:#374151;font-weight:600;">总计金额</span>
+                    <span id="modalAmount" style="font-size:1.3rem;font-weight:700;color:#da9918;"></span>
+                </div>
+            </div>
+            <div style="margin-bottom:0.5rem;">
+                <p
+                    style="font-size:0.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin:0 0 0.5rem 0;border-left:3px solid #da9918;padding-left:0.5rem;">
+                    功德明细</p>
+                <div id="modalBreakdown" style="font-size:0.875rem;"></div>
+            </div>
+            <p id="modalDateTime" style="font-size:0.75rem;color:#9ca3af;text-align:center;margin:0.75rem 0;"></p>
+            <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+                <button onclick="printOfficialReceipt(currentReceiptData)"
+                    style="flex:1;padding:0.75rem;border:1.5px solid #da9918;border-radius:0.5rem;background:white;color:#da9918;font-size:0.875rem;font-weight:700;cursor:pointer;">
+                    🖨️ 下载收据
+                </button>
+                <button onclick="closeModalAndReset()"
+                    style="flex:1;padding:0.75rem;border:none;border-radius:0.5rem;background:#15803d;color:white;font-size:0.875rem;font-weight:700;cursor:pointer;">
+                    关闭 &amp; 重新填写 →
+                </button>
+            </div>
+            <p style="font-size:0.7rem;color:#9ca3af;text-align:center;margin-top:0.75rem;">确认邮件已发送至您的电邮地址</p>
+        </div>
+    </div>
+
+    <div class="max-w-3xl w-full">
+        <!-- 主视觉 -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center bg-amber-100 rounded-full px-4 py-1 mb-2">
+                <i class="fas fa-apple-alt text-amber-600 mr-2"></i>
+                <span class="text-amber-800 text-sm font-semibold">2026 卫塞吉祥 · 浴佛供斋</span>
+            </div>
+            <h1 class="text-4xl font-bold text-primary-700 tracking-tight">🍚 2026 吉隆坡【浴佛节】供斋 🍚</h1>
+            <div class="bg-primary-50 p-4 rounded-md mb-6 text-center">
+                <div class="flex justify-center items-start gap-2 mb-1">
+                    <p class="text-sm text-gray-700">灵鹫山马来西亚佛学会</p>
+                </div>
+                <p class="text-sm text-gray-700">11, Jalan PJU 8/5F, Bandar Damansara Perdana, 47820 Petaling Jaya,
+                    Selangor, Malaysia</p>
+                <div class="flex justify-center items-center gap-2 mt-2">
+                    <p class="text-sm text-gray-700">
+                        📱 询问窗口 (Contact): 016-2768093
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="form-section bg-gradient-to-r from-primary-50 to-amber-50 border-primary-400">
+            <h2 class="text-xl font-bold text-primary-800 mb-3 flex items-center"><i
+                    class="fas fa-hands-helping text-primary-600 mr-2"></i> 供斋功德</h2>
+            <div class="blessing-card bg-white/80 p-5 rounded-xl shadow-inner">
+                <p class="text-lg font-semibold text-primary-700 flex items-center gap-2"><i
+                        class="fas fa-leaf text-amber-500"></i> 知足 · 辩才无碍 · 福寿绵长</p>
+                <p class="text-sm text-gray-600 mt-2">「随喜功德」—— 发心任意金额，皆获圆满功德</p>
+            </div>
+        </div>
+        <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded-md flex items-center gap-2 mb-6">
+            <i class="fas fa-calendar-alt text-red-600"></i>
+            <span class="text-red-700 font-medium">⏰ 截止报名: 17/05/2026 (请尽早登记)</span>
+        </div>
+        <form id="donationForm" class="space-y-6">
+            <div class="form-section">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">📋 联系方式</h2>
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 required">姓名</label>
+                    <p class="text-xs text-gray-500 mb-1">请填写中文全名（简体）</p>
+                    <input type="text" id="name" name="name" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    <div id="nameError" class="error-message hidden"></div>
+                </div>
+                <div class="mb-4">
+                    <label for="whatsapp" class="block text-sm font-medium text-gray-700 required">联络电话</label>
+                    <p class="text-xs text-gray-500 mb-1">请填写有效联络电话（无需空格或"-")</p>
+                    <input type="tel" id="whatsapp" name="whatsapp" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                        placeholder="例如：0123456789" oninput="formatPhoneNumber(this)">
+                    <div id="whatsappError" class="error-message hidden"></div>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 required">电邮地址</label>
+                    <input type="email" id="email" name="email" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    <div id="emailError" class="error-message hidden"></div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4 required">功德项目:</h2>
+                <div class="bg-primary-50 p-4 rounded-lg mb-4 flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                        <span class="font-bold text-primary-800 text-lg">🍚 浴佛节供斋</span>
+                        <p class="text-s text-gray-600">个人名字（只限阳上功德主报名）</p>
+                    </div>
+                    <div class="text-2xl font-bold text-primary-600">随喜功德</div>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">请逐一填写功德主姓名与金额</p>
+                <!-- Stripe-like sponsor component -->
+                <div id="sponsorEntryContainer" class="space-y-2"></div>
+                <button type="button" id="addSponsorBtn" class="sponsor-stripe-add"><i class="fas fa-plus-circle"></i>
+                    添加功德主</button>
+                <p class="text-xs text-amber-600 mt-3"><i class="fas fa-info-circle"></i> 只限阳上功德主报名，每人随喜一元起。</p>
+            </div>
+
+            <!-- Bank details -->
+            <div class="form-section">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3"><i
+                        class="fas fa-university text-primary-500 mr-2"></i>汇款资料</h2>
+                <div class="bg-gray-50 rounded-xl p-5 border border-amber-200">
+                    <div class="space-y-2 font-mono text-gray-800">
+                        <p class="font-bold">HONG LEONG BANK</p>
+                        <p class="text-lg tracking-wider">户口号码：<span
+                                class="font-bold text-primary-700">19400036297</span></p>
+                        <p class="break-words">户口名称：<span class="font-medium">Persatuan Penganut Agama Buddha Ling Jiou
+                                San Malaysia</span></p>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500 bg-amber-50 p-2 rounded">※ 请转账后保留单据，并于此表单上传汇款凭证。</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">💰 总计与汇款单子</h2>
+                <div class="mb-4 flex justify-between items-center bg-amber-50 p-3 rounded-xl">
+                    <span class="font-medium">总计 (Total) </span>
+                    <span id="totalAmount" class="text-2xl font-bold text-primary-600">RM 0.00</span>
+                </div>
+                <div id="totalBreakdown" class="text-sm text-gray-600 mt-1"></div>
+                <div class="mb-4">
+                    <label for="receipt" class="block text-sm font-medium text-gray-700 required">请上传您的汇款单子</label>
+                    <input type="file" id="receipt" name="receipt" accept="image/*,application/pdf" required
+                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                    <div id="receiptError" class="error-message hidden"></div>
+                </div>
+            </div>
+            <button type="submit" id="submitButton"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 ease-in-out">
+                提交 (Submit)
+            </button>
+            <div class="mt-2 text-center text-xs text-gray-500">
+                <p>按一次 Submit 即可，并耐心等待，请勿重复 Submit</p>
+                <p>Please click Submit only once and wait patiently, do not resubmit</p>
+            </div>
+            <div id="messageArea" class="mt-4 p-3 rounded-md text-sm text-center hidden" role="alert"></div>
+        </form>
+    </div>
+
+    <!-- PRINT RECEIPT -->
+    <div id="printReceipt" style="display:none;">
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <img src="https://donate.093.org.tw/images/icon/093_logo.png"
+                    alt="Ling Jiou Mountain Buddhist Society Logo"
+                    style="height: 60px; width: auto; margin-bottom: 10px; display: inline-block;">
+                <h1>2026 卫塞吉祥 · 浴佛供斋</h1>
+                <h2>正式收据 / OFFICIAL RECEIPT</h2>
+            </div>
+            <hr>
+            <div class="receipt-section">
+                <p><strong>报名编号：</strong> <span id="r_receiptId"></span></p>
+                <p><strong>姓名：</strong> <span id="r_name"></span></p>
+                <p><strong>电话：</strong> <span id="r_phone"></span></p>
+                <p><strong>电邮：</strong> <span id="r_email"></span></p>
+            </div>
+            <hr>
+            <div class="receipt-section">
+                <h3>功德明细</h3>
+                <div id="r_breakdown"></div>
+            </div>
+            <hr>
+            <div class="receipt-total">
+                <h3>总金额：<span id="r_total"></span></h3>
+            </div>
+            <hr>
+            <div class="receipt-footer">
+                <p>灵鹫山马来西亚佛学会</p>
+                <p>感恩您的随喜功德 🙏</p>
+                <p id="r_date"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentReceiptData = null;
+        let pendingSubmitData = null;
+        const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz3TZ2YxCeG24cOBSDy7UKAL2lc64BnVQW1S1cH7S9ovSTLAhr6Ct2--X5KnilSzIDR/exec';
+
+        function printOfficialReceipt(data) {
+            document.getElementById("r_receiptId").innerText = data.receiptId;
+            document.getElementById("r_name").innerText = data.name;
+            document.getElementById("r_phone").innerText = data.whatsapp;
+            document.getElementById("r_email").innerText = data.email;
+            document.getElementById("r_total").innerText = data.totalAmount;
+            document.getElementById("r_date").innerText = new Date().toLocaleString('zh-CN');
+            let html = "";
+            Object.values(data.sponsorNames || {}).forEach((item, i) => {
+                html += `<p>${i + 1}. ${item.name} — RM ${item.amount}</p>`;
+            });
+            document.getElementById("r_breakdown").innerHTML = html;
+            document.getElementById("printReceipt").style.display = "block";
+            try { window.print(); } finally { document.getElementById("printReceipt").style.display = "none"; }
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.remove('show');
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = false;
+            submitButton.textContent = '提交 (Submit)';
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('successModal').classList.remove('show');
+            document.getElementById('donationForm').reset();
+            document.getElementById('sponsorEntryContainer').innerHTML = '';
+            createSponsorEntry();
+            document.getElementById('totalAmount').textContent = 'RM 0.00';
+            document.getElementById('totalBreakdown').innerHTML = '';
+            document.getElementById('messageArea').classList.add('hidden');
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = false;
+            submitButton.textContent = '提交 (Submit)';
+            updateFormState();
+            checkFormValidity();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function proceedSubmit() {
+            document.getElementById('confirmModal').classList.remove('show');
+            const submitButton = document.getElementById('submitButton');
+            submitButton.textContent = '提交中... (Submitting...)';
+            const messageArea = document.getElementById('messageArea');
+            messageArea.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'bg-yellow-100');
+            messageArea.classList.add('bg-blue-100', 'text-blue-800');
+            messageArea.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在提交... (Submitting...)';
+            await sendDataToBackend(pendingSubmitData);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const totalAmountSpan = document.getElementById('totalAmount');
+            const totalBreakdownDiv = document.getElementById('totalBreakdown');
+            const donationForm = document.getElementById('donationForm');
+            const messageArea = document.getElementById('messageArea');
+            const receiptInput = document.getElementById('receipt');
+            const receiptErrorDiv = document.getElementById('receiptError');
+            const submitButton = document.getElementById('submitButton');
+            const sponsorEntryContainer = document.getElementById('sponsorEntryContainer');
+            const addSponsorBtn = document.getElementById('addSponsorBtn');
+
+            const contactInputs = {
+                name: { element: document.getElementById('name'), errorDiv: document.getElementById('nameError') },
+                whatsapp: { element: document.getElementById('whatsapp'), errorDiv: document.getElementById('whatsappError') },
+                email: { element: document.getElementById('email'), errorDiv: document.getElementById('emailError') }
+            };
+
+            const strictChineseRegex = /^[\u4E00-\u9FFF\u3400-\u4DBF]+$/u;
+            const phoneRegex = /^\+?\d{8,15}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let isComposing = false;
+
+            window.formatPhoneNumber = function (input) {
+                let value = input.value.replace(/[\s-]/g, '');
+                input.value = value;
+                validateInput(input, contactInputs.whatsapp.errorDiv, 'whatsapp');
+                checkFormValidity();
+            };
+
+            const validateInput = (inputElement, errorDiv, type) => {
+                const value = inputElement.value.trim();
+                let isValid = true;
+                let errorMessage = '';
+                const isVisible = inputElement.offsetParent !== null || inputElement.type === 'file';
+
+                if (inputElement.hasAttribute('required') && isVisible && value === '') {
+                    isValid = false;
+                    errorMessage = '此项为必填。(This field is required.)';
+                } else if (value !== '') {
+                    switch (type) {
+                        case 'chineseName':
+                            if (!isComposing) {
+                                const cleanedValue = value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+                                if (value !== cleanedValue) {
+                                    inputElement.value = cleanedValue;
+                                }
+                                if (!strictChineseRegex.test(cleanedValue)) {
+                                    isValid = false;
+                                    errorMessage = '请输入纯中文姓名，不能包含标点符号、英文或其他非中文字符。(Please enter Chinese characters only, no punctuation or other characters.)';
+                                }
+                            }
+                            break;
+                        case 'whatsapp':
+                            if (!phoneRegex.test(value)) {
+                                isValid = false;
+                                errorMessage = '请输入有效的电话号码 (例如: 0123456789 或 +60123456789)。(Please enter a valid phone number, e.g., 0123456789 or +60123456789.)';
+                            }
+                            break;
+                        case 'email':
+                            if (!emailRegex.test(value)) {
+                                isValid = false;
+                                errorMessage = '请输入有效的电邮地址。(Please enter a valid email address.)';
+                            }
+                            break;
+                        case 'receipt':
+                            const file = inputElement.files[0];
+                            if (file) {
+                                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+                                if (!allowedTypes.includes(file.type)) {
+                                    isValid = false;
+                                    errorMessage = '仅支持 JPG, PNG, GIF, PDF 文件。(Only JPG, PNG, GIF, PDF files are supported.)';
+                                } else if (file.size > 5 * 1024 * 1024) {
+                                    isValid = false;
+                                    errorMessage = '文件大小不能超过 5MB。(File size cannot exceed 5MB.)';
+                                }
+                            } else if (inputElement.hasAttribute('required')) {
+                                isValid = false;
+                                errorMessage = '请上传付款凭证。(Please upload payment receipt.)';
+                            }
+                            break;
+                        case 'amount':
+                            const num = parseFloat(value);
+                            if (isNaN(num) || num < 1) {
+                                isValid = false;
+                                errorMessage = '金额需为1元或以上。(Amount must be at least 1.)';
+                            }
+                            break;
+                    }
+                }
+
+                if (!isValid) {
+                    inputElement.classList.add('border-red-500', 'invalid-chinese');
+                    errorDiv.textContent = errorMessage;
+                    errorDiv.classList.remove('hidden');
+                } else {
+                    inputElement.classList.remove('border-red-500', 'invalid-chinese');
+                    errorDiv.classList.add('hidden');
+                    errorDiv.textContent = '';
+                }
+                return isValid;
+            };
+
+            let sponsorCount = 0;
+
+            function reindexSponsorEntries() {
+                const rows = sponsorEntryContainer.querySelectorAll('.sponsor-row');
+                rows.forEach((row, idx) => {
+                    row.querySelector('.sponsor-index').textContent =
+                        `功德主${String(idx + 1).padStart(2, '0')}`;
+                });
+                sponsorCount = rows.length;
+            }
+
+            function createSponsorEntry(nameVal = '', amountVal = '') {
+                const idx = sponsorEntryContainer.children.length + 1;
+                const row = document.createElement('div');
+                row.className = 'sponsor-row';
+                row.innerHTML = `
+    <div class="sponsor-row-top">
+        <div class="sponsor-index">功德主${String(idx).padStart(2, '0')}</div>
+        <div class="sponsor-remove"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="sponsor-row-bottom">
+        <input type="text"
+            class="sponsor-name"
+            placeholder="中文姓名"
+            value="${nameVal}"
+            required
+        />
+        <div class="sponsor-amount-box">
+            <span class="sponsor-amount-prefix">RM</span>
+            <input type="number"
+                class="sponsor-amount"
+                value="${amountVal}"
+                min="1"
+                required
+            />
+        </div>
+    </div>
+`;
+                const nameInput = row.querySelector('.sponsor-name');
+                const amountInput = row.querySelector('.sponsor-amount');
+                const removeBtn = row.querySelector('.sponsor-remove');
+
+                nameInput.addEventListener('compositionstart', () => { nameInput._composing = true; });
+                nameInput.addEventListener('compositionend', () => {
+                    nameInput._composing = false;
+                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF]/g, '');
+                    updateFormState();
+                    checkFormValidity();
+                });
+                nameInput.addEventListener('input', () => {
+                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF]/g, '');
+                    updateFormState();
+                    checkFormValidity();
+                });
+                amountInput.addEventListener('input', () => {
+                    updateFormState();
+                    checkFormValidity();
+                });
+                removeBtn.addEventListener('click', () => {
+                    row.remove();
+                    reindexSponsorEntries();
+                    updateFormState();
+                    checkFormValidity();
+                });
+
+                sponsorEntryContainer.appendChild(row);
+                reindexSponsorEntries();
+                updateFormState();
+                checkFormValidity();
+            }
+
+            addSponsorBtn.addEventListener('click', () => createSponsorEntry());
+            createSponsorEntry();
+
+            function updateFormState() {
+                let totalCost = 0;
+                let breakdownHtml = '';
+                const sponsorInputs = sponsorEntryContainer.querySelectorAll('.sponsor-row');
+                sponsorInputs.forEach((row, idx) => {
+                    const nameInput = row.querySelector('.sponsor-name');
+                    const amountInput = row.querySelector('.sponsor-amount');
+                    const name = nameInput.value.trim();
+                    let amount = amountInput.value.trim();
+                    amount = amount.replace(/[^0-9.]/g, '');
+                    amountInput.value = amount;
+                    const numAmount = parseFloat(amount) || 0;
+                    if (name !== '' && numAmount >= 1) {
+                        totalCost += numAmount;
+                        breakdownHtml += `<p>${name} : RM ${numAmount.toFixed(2)}</p>`;
+                    }
+                });
+                totalAmountSpan.textContent = `RM ${totalCost.toFixed(2)}`;
+                totalBreakdownDiv.innerHTML = breakdownHtml;
+                checkFormValidity();
+            }
+
+            function checkFormValidity() {
+                let overallFormValid = true;
+                if (!validateInput(contactInputs.name.element, contactInputs.name.errorDiv, 'chineseName')) overallFormValid = false;
+                if (!validateInput(contactInputs.whatsapp.element, contactInputs.whatsapp.errorDiv, 'whatsapp')) overallFormValid = false;
+                if (!validateInput(contactInputs.email.element, contactInputs.email.errorDiv, 'email')) overallFormValid = false;
+                if (!validateInput(receiptInput, receiptErrorDiv, 'receipt')) overallFormValid = false;
+
+                const sponsorInputs = sponsorEntryContainer.querySelectorAll('.sponsor-row');
+                let hasValidSponsor = false;
+                sponsorInputs.forEach(row => {
+                    const nameInput = row.querySelector('.sponsor-name');
+                    const amountInput = row.querySelector('.sponsor-amount');
+                    const nameValid = nameInput.value.trim() !== '';
+                    const amountValid = parseFloat(amountInput.value.trim()) >= 1;
+                    if (nameValid && amountValid) hasValidSponsor = true;
+                    if (!nameValid || !amountValid) overallFormValid = false;
+                });
+                if (!hasValidSponsor) overallFormValid = false;
+                submitButton.disabled = !overallFormValid;
+            }
+
+            contactInputs.name.element.addEventListener('compositionstart', () => { isComposing = true; });
+            contactInputs.name.element.addEventListener('compositionend', () => {
+                isComposing = false;
+                validateInput(contactInputs.name.element, contactInputs.name.errorDiv, 'chineseName');
+                checkFormValidity();
+                updateFormState();
+            });
+            contactInputs.name.element.addEventListener('input', (e) => {
+                if (!isComposing) {
+                    const filteredValue = e.target.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+                    if (e.target.value !== filteredValue) {
+                        e.target.value = filteredValue;
+                    }
+                    validateInput(contactInputs.name.element, contactInputs.name.errorDiv, 'chineseName');
+                    checkFormValidity();
+                    updateFormState();
+                }
+            });
+            contactInputs.name.element.addEventListener('blur', () => {
+                validateInput(contactInputs.name.element, contactInputs.name.errorDiv, 'chineseName');
+                checkFormValidity();
+                updateFormState();
+            });
+            contactInputs.whatsapp.element.addEventListener('input', () => { });
+            contactInputs.email.element.addEventListener('input', () => {
+                validateInput(contactInputs.email.element, contactInputs.email.errorDiv, 'email');
+                checkFormValidity();
+            });
+            receiptInput.addEventListener('change', () => {
+                validateInput(receiptInput, receiptErrorDiv, 'receipt');
+                checkFormValidity();
+            });
+            sponsorEntryContainer.addEventListener('input', updateFormState);
+
+            updateFormState();
+            checkFormValidity();
+
+            donationForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                checkFormValidity();
+                if (submitButton.disabled) {
+                    const firstError = donationForm.querySelector('.border-red-500, .invalid-field');
+                    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    messageArea.classList.remove('hidden');
+                    messageArea.className = 'mt-4 p-3 rounded-md text-sm text-center bg-yellow-100 text-yellow-800';
+                    messageArea.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i> 请填写所有必填项并修正错误。';
+                    return;
+                }
+                submitButton.disabled = true;
+                submitButton.textContent = '请确认...';
+
+                const data = {};
+                data['name'] = contactInputs.name.element.value.trim();
+                data['whatsapp'] = contactInputs.whatsapp.element.value.trim();
+                data['email'] = contactInputs.email.element.value.trim();
+
+                const sponsorInputs = sponsorEntryContainer.querySelectorAll('.sponsor-row');
+                const allSponsorNames = {};
+                sponsorInputs.forEach((row, idx) => {
+                    const nameInput = row.querySelector('.sponsor-name');
+                    const amountInput = row.querySelector('.sponsor-amount');
+                    const name = nameInput.value.trim();
+                    let amount = amountInput.value.trim();
+                    amount = amount.replace(/[^0-9.]/g, '');
+                    const numAmount = parseFloat(amount) || 0;
+                    if (name !== '' && numAmount >= 1) {
+                        allSponsorNames[`sponsor${idx + 1}`] = { name, amount: numAmount };
+                    }
+                });
+                data['sponsorNames'] = allSponsorNames;
+                data['totalAmount'] = totalAmountSpan.textContent;
+                data['totalBreakdown'] = totalBreakdownDiv.textContent.trim();
+
+                let confirmHtml = `
+            <div style="margin-bottom:0.75rem;">
+                <p style="font-size:0.75rem;color:#6b7280;margin:0 0 2px 0;">联系人</p>
+                <p style="font-weight:600;color:#1f2937;margin:0;">${data.name} &nbsp;|&nbsp; ${data.whatsapp}</p>
+                <p style="font-size:0.8rem;color:#6b7280;margin:0;">${data.email}</p>
+            </div>
+            <div style="border-top:1px solid #fce4a6;padding-top:0.75rem;margin-bottom:0.75rem;">
+                <p style="font-size:0.75rem;color:#6b7280;margin:0 0 4px 0;">功德主姓名</p>
+                ${Object.values(allSponsorNames).map((item, i) => `<p style="margin:2px 0;font-size:0.875rem;color:#374151;">${i + 1}. ${item.name} — RM ${item.amount}</p>`).join('')}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#fef9e7;padding:0.5rem 0.75rem;border-radius:0.5rem;">
+                <span style="font-weight:600;color:#374151;">总计金额</span>
+                <span style="font-size:1.2rem;font-weight:700;color:#da9918;">${data.totalAmount}</span>
+            </div>`;
+                document.getElementById('confirmDetails').innerHTML = confirmHtml;
+
+                const receiptFile = receiptInput.files[0];
+                if (receiptFile) {
+                    const reader = new FileReader();
+                    reader.onload = async function (event) {
+                        data['receiptBase64'] = event.target.result;
+                        data['receiptFileName'] = receiptFile.name;
+                        data['receiptFileType'] = receiptFile.type;
+                        pendingSubmitData = data;
+                        document.getElementById('confirmModal').classList.add('show');
+                    };
+                    reader.onerror = function () {
+                        messageArea.className = 'mt-4 p-3 rounded-md text-sm text-center bg-red-100 text-red-800';
+                        messageArea.classList.remove('hidden');
+                        messageArea.innerHTML = '<i class="fas fa-times-circle mr-2"></i> 读取收据文件失败。';
+                        submitButton.disabled = false;
+                        submitButton.textContent = '提交 (Submit)';
+                    };
+                    reader.readAsDataURL(receiptFile);
+                } else {
+                    messageArea.className = 'mt-4 p-3 rounded-md text-sm text-center bg-red-100 text-red-800';
+                    messageArea.classList.remove('hidden');
+                    messageArea.innerHTML = '<i class="fas fa-times-circle mr-2"></i> 提交失败：请务必上传付款凭证。';
+                    submitButton.disabled = true;
+                    submitButton.textContent = '提交 (Submit)';
+                }
+            });
+
+            document.getElementById('confirmModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('confirmModal')) closeConfirm();
+            });
+        });
+
+        async function sendDataToBackend(data) {
+            const url = API_ENDPOINT + '?cacheBuster=' + Date.now();
+            const submitButton = document.getElementById('submitButton');
+            const messageArea = document.getElementById('messageArea');
+            try {
+                const response = await fetch(url, { method: 'POST', headers: {}, body: JSON.stringify(data) });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Network response was not ok');
+                if (result.status === 'success') {
+                    messageArea.classList.add('hidden');
+                    document.getElementById('modalReceiptId').innerText = result.receiptId || '-';
+                    document.getElementById('modalAmount').innerText = data.totalAmount || '-';
+                    document.getElementById('modalDateTime').innerText = new Date().toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+                    let html = '';
+                    Object.values(data.sponsorNames || {}).forEach((item, idx) => {
+                        html += `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f3f4f6;">
+                    <span style="color:#374151;">功德主${idx + 1}: ${item.name}</span>
+                    <span style="font-weight:600;color:#da9918;">RM ${item.amount}</span>
+                </div>`;
+                    });
+                    document.getElementById('modalBreakdown').innerHTML = html;
+                    currentReceiptData = {
+                        receiptId: result.receiptId || '-',
+                        name: data.name,
+                        whatsapp: data.whatsapp,
+                        email: data.email,
+                        totalAmount: data.totalAmount,
+                        sponsorNames: data.sponsorNames
+                    };
+                    document.getElementById('successModal').classList.add('show');
+                    submitButton.disabled = false;
+                    submitButton.textContent = '提交 (Submit)';
+                    return;
+                }
+                throw new Error(result.message || '提交失败');
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                messageArea.className = 'mt-4 p-3 rounded-md text-sm text-center bg-red-100 text-red-800';
+                messageArea.classList.remove('hidden');
+                messageArea.innerHTML = `<i class="fas fa-times-circle mr-2"></i> 提交失败：${error.message || '网络错误'}`;
+                submitButton.disabled = false;
+                submitButton.textContent = '提交 (Submit)';
+            }
+        }
+    </script>
+</body>
+
+</html>
