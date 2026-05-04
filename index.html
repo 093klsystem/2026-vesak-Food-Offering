@@ -199,7 +199,7 @@
             transition: background 0.15s, box-shadow 0.15s;
         }
 
-        .sponsor-stripe-add:hover {
+        .sponsor-stripe-add:hover:not(:disabled) {
             background: linear-gradient(90deg, #fde047 0%, #f7b42a 100%);
             box-shadow: 0 4px 16px 0 rgba(247, 180, 42, 0.13);
         }
@@ -211,7 +211,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* ADD THIS INSTEAD: */
         .sponsor-row {
             display: flex;
             flex-direction: column;
@@ -294,6 +293,23 @@
             font-size: 16px;
         }
 
+        #maxEntriesNotice {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fffbeb;
+            border: 1.5px solid #fbbf24;
+            color: #92400e;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.6rem;
+            margin-top: 0.35rem;
+        }
+
+        #maxEntriesNotice.show {
+            display: flex;
+        }
 
         /* Confirm modal */
         #confirmModal,
@@ -531,11 +547,17 @@
                     <div class="text-2xl font-bold text-primary-600">随喜功德</div>
                 </div>
                 <p class="text-xs text-gray-500 mb-3">请逐一填写功德主姓名与金额</p>
-                <!-- Stripe-like sponsor component -->
+                <!-- Sponsor entries -->
                 <div id="sponsorEntryContainer" class="space-y-2"></div>
-                <button type="button" id="addSponsorBtn" class="sponsor-stripe-add"><i class="fas fa-plus-circle"></i>
-                    添加功德主</button>
-                <p class="text-xs text-amber-600 mt-3"><i class="fas fa-info-circle"></i> 只限阳上功德主报名</p>
+                <button type="button" id="addSponsorBtn" class="sponsor-stripe-add">
+                    <i class="fas fa-plus-circle"></i> 添加功德主
+                </button>
+                <!-- Max entries notice -->
+                <div id="maxEntriesNotice">
+                    <i class="fas fa-lock" style="color:#d97706;"></i>
+                    <span>已达最多 20 位功德主上限。(Maximum of 20 entries reached.)</span>
+                </div>
+                <p class="text-xs text-amber-600 mt-3"><i class="fas fa-info-circle"></i> 只限阳上功德主报名（最多 20 位）</p>
             </div>
 
             <!-- Bank details -->
@@ -616,6 +638,8 @@
     </div>
 
     <script>
+        const MAX_SPONSORS = 20;
+
         let currentReceiptData = null;
         let pendingSubmitData = null;
         const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz3TZ2YxCeG24cOBSDy7UKAL2lc64BnVQW1S1cH7S9ovSTLAhr6Ct2--X5KnilSzIDR/exec';
@@ -653,7 +677,8 @@
             const submitButton = document.getElementById('submitButton');
             submitButton.disabled = false;
             submitButton.textContent = '提交 (Submit)';
-                        createSponsorEntry();
+            createSponsorEntry();
+            updateSponsorAddBtn();
             updateFormState();
             checkFormValidity();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -680,6 +705,7 @@
             const submitButton = document.getElementById('submitButton');
             const sponsorEntryContainer = document.getElementById('sponsorEntryContainer');
             const addSponsorBtn = document.getElementById('addSponsorBtn');
+            const maxEntriesNotice = document.getElementById('maxEntriesNotice');
 
             const contactInputs = {
                 name: { element: document.getElementById('name'), errorDiv: document.getElementById('nameError') },
@@ -692,6 +718,22 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             let isComposing = false;
+
+            // ── Expose updateSponsorAddBtn globally so reset can call it ──
+            window.updateSponsorAddBtn = function () {
+                const count = sponsorEntryContainer.querySelectorAll('.sponsor-row').length;
+                if (count >= MAX_SPONSORS) {
+                    addSponsorBtn.disabled = true;
+                    addSponsorBtn.style.opacity = '0.45';
+                    addSponsorBtn.style.cursor = 'not-allowed';
+                    maxEntriesNotice.classList.add('show');
+                } else {
+                    addSponsorBtn.disabled = false;
+                    addSponsorBtn.style.opacity = '';
+                    addSponsorBtn.style.cursor = '';
+                    maxEntriesNotice.classList.remove('show');
+                }
+            };
 
             window.formatPhoneNumber = function (input) {
                 let value = input.value.replace(/[\s-]/g, '');
@@ -777,32 +819,31 @@
 
             const strictChineseSponsorRegex = /^[\u4E00-\u9FFF\u3400-\u4DBF]+$/u;
 
-function validateSponsorName(input) {
-    const val = input.value.trim();
-    let errorDiv = input.closest('.sponsor-row').querySelector('.sponsor-name-error');
-    if (!errorDiv) {
-        errorDiv = document.createElement('div');
-        errorDiv.className = 'sponsor-name-error error-message';
-        input.closest('.sponsor-row-bottom').after(errorDiv);
-    }
-    if (val === '') {
-        input.classList.add('border-red-500');
-        errorDiv.textContent = '此项为必填。(This field is required.)';
-        errorDiv.classList.remove('hidden');
-        return false;
-    } else if (!strictChineseSponsorRegex.test(val)) {
-        input.classList.add('border-red-500');
-        errorDiv.textContent = '请输入纯中文姓名，不能包含标点符号、英文或其他非中文字符。';
-        errorDiv.classList.remove('hidden');
-        return false;
-    } else {
-        input.classList.remove('border-red-500');
-        errorDiv.textContent = '';
-        errorDiv.classList.add('hidden');
-        return true;
-    }
-}
-
+            function validateSponsorName(input) {
+                const val = input.value.trim();
+                let errorDiv = input.closest('.sponsor-row').querySelector('.sponsor-name-error');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'sponsor-name-error error-message';
+                    input.closest('.sponsor-row-bottom').after(errorDiv);
+                }
+                if (val === '') {
+                    input.classList.add('border-red-500');
+                    errorDiv.textContent = '此项为必填。(This field is required.)';
+                    errorDiv.classList.remove('hidden');
+                    return false;
+                } else if (!strictChineseSponsorRegex.test(val)) {
+                    input.classList.add('border-red-500');
+                    errorDiv.textContent = '请输入纯中文姓名，不能包含标点符号、英文或其他非中文字符。';
+                    errorDiv.classList.remove('hidden');
+                    return false;
+                } else {
+                    input.classList.remove('border-red-500');
+                    errorDiv.textContent = '';
+                    errorDiv.classList.add('hidden');
+                    return true;
+                }
+            }
 
             function reindexSponsorEntries() {
                 const rows = sponsorEntryContainer.querySelectorAll('.sponsor-row');
@@ -811,10 +852,18 @@ function validateSponsorName(input) {
                         `功德主${String(idx + 1).padStart(2, '0')}`;
                 });
                 sponsorCount = rows.length;
+                window.updateSponsorAddBtn();
             }
 
-            function createSponsorEntry(nameVal = '', amountVal = '') {
-                const idx = sponsorEntryContainer.children.length + 1;
+            window.createSponsorEntry = function (nameVal = '', amountVal = '') {
+                // Enforce the cap before adding
+                const currentCount = sponsorEntryContainer.querySelectorAll('.sponsor-row').length;
+                if (currentCount >= MAX_SPONSORS) {
+                    window.updateSponsorAddBtn();
+                    return;
+                }
+
+                const idx = currentCount + 1;
                 const row = document.createElement('div');
                 row.className = 'sponsor-row';
                 row.innerHTML = `
@@ -845,27 +894,27 @@ function validateSponsorName(input) {
                 const removeBtn = row.querySelector('.sponsor-remove');
 
                 nameInput.addEventListener('compositionstart', () => { nameInput._composing = true; });
-nameInput.addEventListener('compositionend', () => {
-    nameInput._composing = false;
-    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
-    validateSponsorName(nameInput);
-    updateFormState();
-    checkFormValidity();
-});
-nameInput.addEventListener('input', () => {
-    if (!nameInput._composing) {
-        const filtered = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
-        if (nameInput.value !== filtered) nameInput.value = filtered;
-        validateSponsorName(nameInput);
-    }
-    updateFormState();
-    checkFormValidity();
-});
-nameInput.addEventListener('blur', () => {
-    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
-    validateSponsorName(nameInput);
-    checkFormValidity();
-});
+                nameInput.addEventListener('compositionend', () => {
+                    nameInput._composing = false;
+                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+                    validateSponsorName(nameInput);
+                    updateFormState();
+                    checkFormValidity();
+                });
+                nameInput.addEventListener('input', () => {
+                    if (!nameInput._composing) {
+                        const filtered = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+                        if (nameInput.value !== filtered) nameInput.value = filtered;
+                        validateSponsorName(nameInput);
+                    }
+                    updateFormState();
+                    checkFormValidity();
+                });
+                nameInput.addEventListener('blur', () => {
+                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+                    validateSponsorName(nameInput);
+                    checkFormValidity();
+                });
                 amountInput.addEventListener('input', () => {
                     updateFormState();
                     checkFormValidity();
@@ -881,7 +930,7 @@ nameInput.addEventListener('blur', () => {
                 reindexSponsorEntries();
                 updateFormState();
                 checkFormValidity();
-            }
+            };
 
             addSponsorBtn.addEventListener('click', () => createSponsorEntry());
             createSponsorEntry();
@@ -920,8 +969,8 @@ nameInput.addEventListener('blur', () => {
                 sponsorInputs.forEach(row => {
                     const nameInput = row.querySelector('.sponsor-name');
                     const amountInput = row.querySelector('.sponsor-amount');
-const nameVal = nameInput.value.trim();
-const nameValid = nameVal !== '' && strictChineseSponsorRegex.test(nameVal);
+                    const nameVal = nameInput.value.trim();
+                    const nameValid = nameVal !== '' && strictChineseSponsorRegex.test(nameVal);
                     const amountValid = parseFloat(amountInput.value.trim()) >= 1;
                     if (nameValid && amountValid) hasValidSponsor = true;
                     if (!nameValid || !amountValid) overallFormValid = false;
@@ -1096,26 +1145,21 @@ const nameValid = nameVal !== '' && strictChineseSponsorRegex.test(nameVal);
             }
         }
 
-
-
-        
-
         // ── DEADLINE CHECK ON PAGE LOAD ──
-(async function checkDeadline() {
-    try {
-        const res = await fetch(API_ENDPOINT);
-        const data = await res.json();
-        if (data.closed) {
-            showDeadlineBanner();
-        }
-    } catch (e) {
-        console.warn('Deadline check failed, allowing form to proceed.');
-    }
-})();
+        (async function checkDeadline() {
+            try {
+                const res = await fetch(API_ENDPOINT);
+                const data = await res.json();
+                if (data.closed) {
+                    showDeadlineBanner();
+                }
+            } catch (e) {
+                console.warn('Deadline check failed, allowing form to proceed.');
+            }
+        })();
 
-function showDeadlineBanner() {
-    // Replace entire page body content
-    document.body.innerHTML = `
+        function showDeadlineBanner() {
+            document.body.innerHTML = `
         <div style="
             min-height: 100vh;
             background: linear-gradient(135deg, #fff9ef 0%, #fff2e0 100%);
@@ -1134,13 +1178,10 @@ function showDeadlineBanner() {
                 overflow: hidden;
                 text-align: center;
             ">
-                <!-- Top bar -->
                 <div style="background: #7a1a1a; padding: 2rem 2rem 1.5rem;">
                     <p style="margin:0 0 4px 0;color:#ffffff;font-size:1.2rem;font-weight:700;letter-spacing:3px;">靈鷲山佛教教團</p>
                     <p style="margin:0;color:#f5d5a0;font-size:0.75rem;letter-spacing:2px;">Ling Jiou Mountain Buddhist Society</p>
                 </div>
-
-                <!-- Icon + title -->
                 <div style="padding: 2.5rem 2rem 1rem;">
                     <div style="font-size: 3.5rem; margin-bottom: 1rem;">🙏</div>
                     <h1 style="font-size: 1.5rem; font-weight: 700; color: #7a1a1a; margin: 0 0 0.5rem 0;">
@@ -1149,8 +1190,6 @@ function showDeadlineBanner() {
                     <p style="font-size: 0.95rem; color: #9a6a20; font-weight: 600; margin: 0 0 1.5rem 0;">
                         Registration Closed
                     </p>
-
-                    <!-- Info card -->
                     <div style="
                         background: #fdf8f0;
                         border: 1px solid #f5d5a0;
@@ -1167,13 +1206,9 @@ function showDeadlineBanner() {
                             Thank you for your kind support. 🪔
                         </p>
                     </div>
-
-                    <!-- Contact -->
                     <p style="font-size: 0.8rem; color: #aaa; margin: 0 0 0.5rem 0;">如有疑问，请联系 / For enquiries:</p>
                     <p style="font-size: 0.9rem; color: #7a1a1a; font-weight: 600; margin: 0;">📱 016-2768093</p>
                 </div>
-
-                <!-- Footer -->
                 <div style="
                     background: #fdf8f0;
                     border-top: 1px solid #f0e0c0;
@@ -1186,11 +1221,7 @@ function showDeadlineBanner() {
             </div>
         </div>
     `;
-}
-
-    
-
-
+        }
     </script>
 </body>
 
