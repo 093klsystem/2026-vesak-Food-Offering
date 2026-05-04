@@ -775,6 +775,35 @@
 
             let sponsorCount = 0;
 
+            const strictChineseSponsorRegex = /^[\u4E00-\u9FFF\u3400-\u4DBF]+$/u;
+
+function validateSponsorName(input) {
+    const val = input.value.trim();
+    let errorDiv = input.closest('.sponsor-row').querySelector('.sponsor-name-error');
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'sponsor-name-error error-message';
+        input.closest('.sponsor-row-bottom').after(errorDiv);
+    }
+    if (val === '') {
+        input.classList.add('border-red-500');
+        errorDiv.textContent = '此项为必填。(This field is required.)';
+        errorDiv.classList.remove('hidden');
+        return false;
+    } else if (!strictChineseSponsorRegex.test(val)) {
+        input.classList.add('border-red-500');
+        errorDiv.textContent = '请输入纯中文姓名，不能包含标点符号、英文或其他非中文字符。';
+        errorDiv.classList.remove('hidden');
+        return false;
+    } else {
+        input.classList.remove('border-red-500');
+        errorDiv.textContent = '';
+        errorDiv.classList.add('hidden');
+        return true;
+    }
+}
+
+
             function reindexSponsorEntries() {
                 const rows = sponsorEntryContainer.querySelectorAll('.sponsor-row');
                 rows.forEach((row, idx) => {
@@ -816,17 +845,27 @@
                 const removeBtn = row.querySelector('.sponsor-remove');
 
                 nameInput.addEventListener('compositionstart', () => { nameInput._composing = true; });
-                nameInput.addEventListener('compositionend', () => {
-                    nameInput._composing = false;
-                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF]/g, '');
-                    updateFormState();
-                    checkFormValidity();
-                });
-                nameInput.addEventListener('input', () => {
-                    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF]/g, '');
-                    updateFormState();
-                    checkFormValidity();
-                });
+nameInput.addEventListener('compositionend', () => {
+    nameInput._composing = false;
+    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+    validateSponsorName(nameInput);
+    updateFormState();
+    checkFormValidity();
+});
+nameInput.addEventListener('input', () => {
+    if (!nameInput._composing) {
+        const filtered = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+        if (nameInput.value !== filtered) nameInput.value = filtered;
+        validateSponsorName(nameInput);
+    }
+    updateFormState();
+    checkFormValidity();
+});
+nameInput.addEventListener('blur', () => {
+    nameInput.value = nameInput.value.replace(/[^\u4E00-\u9FFF\u3400-\u4DBF]/gu, '');
+    validateSponsorName(nameInput);
+    checkFormValidity();
+});
                 amountInput.addEventListener('input', () => {
                     updateFormState();
                     checkFormValidity();
@@ -881,7 +920,8 @@
                 sponsorInputs.forEach(row => {
                     const nameInput = row.querySelector('.sponsor-name');
                     const amountInput = row.querySelector('.sponsor-amount');
-                    const nameValid = nameInput.value.trim() !== '';
+const nameVal = nameInput.value.trim();
+const nameValid = nameVal !== '' && strictChineseSponsorRegex.test(nameVal);
                     const amountValid = parseFloat(amountInput.value.trim()) >= 1;
                     if (nameValid && amountValid) hasValidSponsor = true;
                     if (!nameValid || !amountValid) overallFormValid = false;
