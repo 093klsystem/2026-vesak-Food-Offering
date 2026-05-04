@@ -647,13 +647,13 @@
             document.getElementById('successModal').classList.remove('show');
             document.getElementById('donationForm').reset();
             document.getElementById('sponsorEntryContainer').innerHTML = '';
-            createSponsorEntry();
             document.getElementById('totalAmount').textContent = 'RM 0.00';
             document.getElementById('totalBreakdown').innerHTML = '';
             document.getElementById('messageArea').classList.add('hidden');
             const submitButton = document.getElementById('submitButton');
             submitButton.disabled = false;
             submitButton.textContent = '提交 (Submit)';
+                        createSponsorEntry();
             updateFormState();
             checkFormValidity();
             window.scrollTo({ top: 0, behavior: 'smooth' });
