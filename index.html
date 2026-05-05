@@ -525,7 +525,7 @@
                 <div class="mb-4">
                     <label for="whatsapp" class="block text-sm font-medium text-gray-700 required">联络电话</label>
                     <p class="text-xs text-gray-500 mb-1">请填写有效联络电话（无需空格或"-")</p>
-                    <input type="tel" id="whatsapp" name="whatsapp" required
+                    <input type="tel" id="whatsapp" name="whatsapp" required minlength="10" maxlength="11"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                         placeholder="例如：0123456789" oninput="formatPhoneNumber(this)">
                     <div id="whatsappError" class="error-message hidden"></div>
@@ -736,10 +736,22 @@
             };
 
             window.formatPhoneNumber = function (input) {
-                let value = input.value.replace(/[\s-]/g, '');
-                input.value = value;
-                validateInput(input, contactInputs.whatsapp.errorDiv, 'whatsapp');
-                checkFormValidity();
+                // 去除空格、横线，只保留数字与开头可选的 +
+    let value = input.value.replace(/[\s\-]/g, '');
+    // 只允许开头一个 + 后接纯数字
+    value = value.replace(/[^\d+]/g, '');
+    if (value.startsWith('+')) {
+        value = '+' + value.slice(1).replace(/\D/g, '');
+    }
+    // 强制截断：带 + 最多13字符(+60xxxxxxxxx)，纯数字最多11位
+    if (value.startsWith('+')) {
+        value = value.slice(0, 13); // +60 + 10 digits
+    } else {
+        value = value.slice(0, 11); // max 11 digits
+    }
+    input.value = value;
+    validateInput(input, contactInputs.whatsapp.errorDiv, 'whatsapp');
+    checkFormValidity();
             };
 
             const validateInput = (inputElement, errorDiv, type) => {
